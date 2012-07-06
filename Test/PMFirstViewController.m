@@ -17,19 +17,33 @@
 
 @implementation PMFirstViewController
 
-@synthesize picker;
-@synthesize toolbar;
-@synthesize field;
+@synthesize picker = _picker;
+@synthesize toolbar = _toolbar;
+@synthesize field = _field;
 
 -(void)loadView
 {
     [super loadView];
     self.picker = [[UIDatePicker alloc] init];
+    [self.picker addTarget:self action:@selector(handlePickerChanged:) forControlEvents:UIControlEventValueChanged];
     self.toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-    self.field = [[UITextField alloc] initWithFrame:CGRectMake(15, 15, 100, 25)];
-    self.field.backgroundColor = [UIColor redColor];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignKeyboard:)];
+    self.toolbar.items = [NSArray arrayWithObject:doneButton];
+    self.field = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 300, 25)];
+    self.field.backgroundColor = [UIColor lightGrayColor];
     self.field.inputView = self.picker;
     self.field.inputAccessoryView = self.toolbar;
+}
+
+- (void)resignKeyboard:(id)sender
+{
+    [self.field resignFirstResponder];
+}
+- (void)handlePickerChanged:(id)sender
+{
+    UIDatePicker *picker = (UIDatePicker *)sender;
+    NSString *dateString = [picker.date description];
+    self.field.text = dateString;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
