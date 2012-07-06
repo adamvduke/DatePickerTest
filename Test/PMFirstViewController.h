@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PMFirstViewController : UIViewController
+@interface PMFirstViewController : UITableViewController<UITableViewDataSource, UITableViewDelegate>
 
 @end
